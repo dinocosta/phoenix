@@ -483,7 +483,9 @@ defmodule Phoenix.Router do
 
         case __match_route__(decoded, method, host) do
           {metadata, prepare, pipeline, plug_opts} ->
-            Phoenix.Router.__call__(conn, metadata, prepare, pipeline, plug_opts)
+            conn
+            |> Plug.Conn.put_private(:phoenix_log_level, metadata.log)
+            |> Phoenix.Router.__call__(metadata, prepare, pipeline, plug_opts)
 
           :error ->
             raise NoRouteError, conn: conn, router: __MODULE__

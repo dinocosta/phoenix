@@ -198,7 +198,7 @@ defmodule Phoenix.Logger do
 
   defp keep_values(_other, _params), do: "[FILTERED]"
 
-  defp log_level(nil, _conn), do: :info
+  defp log_level(nil, conn), do: conn.private[:phoenix_log_level] || :info
   defp log_level(level, _conn) when is_atom(level), do: level
 
   defp log_level({mod, fun, args}, conn) when is_atom(mod) and is_atom(fun) and is_list(args) do
